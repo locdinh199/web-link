@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Nhận Key Miễn Phí</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+      background-color: #f2f2f2;
+    }
+    h1 { color: #333; }
+    #key { margin-top: 20px; font-size: 24px; color: green; font-weight: bold; }
+    input, button {
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+    }
+    #uploadInput {
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <h1>📥 Upload file key (.txt) và nhận key ngẫu nhiên</h1>
+  <input type="file" id="uploadInput" accept=".txt">
+  <br>
+  <button onclick="layKey()">Lấy Key</button>
+  <div id="key"></div>
+
+  <script>
+    let danhSachKey = [];
+
+    // Đọc file txt khi người dùng upload
+    document.getElementById('uploadInput').addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const text = e.target.result;
+        danhSachKey = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+        alert("Đã tải " + danhSachKey.length + " key từ file.");
+      };
+      reader.readAsText(file);
+    });
+
+    function layKey() {
+      if (danhSachKey.length === 0) {
+        document.getElementById("key").innerText = "🚫 Chưa có key hoặc đã hết!";
+        return;
+      }
+
+      const viTri = Math.floor(Math.random() * danhSachKey.length);
+      const keyDaChon = danhSachKey.splice(viTri, 1)[0];
+      document.getElementById("key").innerText = `🔑 Key của bạn: ${keyDaChon}`;
+    }
+  </script>
+</body>
+</html>
